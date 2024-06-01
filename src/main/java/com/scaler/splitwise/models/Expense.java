@@ -1,11 +1,12 @@
 package com.scaler.splitwise.models;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
+import java.util.HashMap;
 import java.util.Map;
 
 // created_by
@@ -14,6 +15,7 @@ import java.util.Map;
 //    M     :   1
 @Getter
 @Setter
+@ToString
 @Entity
 public class Expense extends BaseModel {
     private int amount;
@@ -26,9 +28,15 @@ public class Expense extends BaseModel {
     private String description;
 
     @ElementCollection
+    @CollectionTable(name = "expense_paidby_mapping", joinColumns = @JoinColumn(name = "expense_id") )
+    @Column(name="paid_amount")
+    @MapKeyJoinColumn(name = "user_key")
     private Map<User, Integer> paidBy;
 
     @ElementCollection
+    @CollectionTable(name = "expense_hadtopay_mapping", joinColumns = @JoinColumn(name = "expense_id") )
+    @Column(name="had_to_pay_amount")
+    @MapKeyJoinColumn(name = "user_key")
     private Map<User, Integer> hadToPay;
 }
 

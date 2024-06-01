@@ -1,5 +1,6 @@
 package com.scaler.splitwise.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,10 +22,12 @@ public class BaseModel {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     @Column(updatable = false)
+    @JsonIgnore
     private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
+    @JsonIgnore
     private Date lastModifiedAt;
 
 }
