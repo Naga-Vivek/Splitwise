@@ -19,6 +19,7 @@ public class User extends BaseModel {
         UserDTO userDTO = new UserDTO();
         userDTO.setPhoneNumber(phoneNumber);
         userDTO.setName(name);
+        userDTO.setId(this.getId());
         return userDTO;
     }
 }

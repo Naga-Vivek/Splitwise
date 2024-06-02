@@ -9,10 +9,7 @@ import com.scaler.splitwise.strategies.passwordhashing.PasswordHashingStrategy;
 import com.scaler.splitwise.strategies.settleup.SettleUpExpensesStrategy;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -66,6 +63,17 @@ public class UserService {
     public List<Transaction> settleUp(Long userId){
         Set<Expense> expenses = expenseRepository.findAllByPaidByUserIsOrHadToPayUserIs(userId,userId);
         List<Transaction> transactions = settleUpExpensesStrategy.settle(expenses);
-        return  transactions;
+
+        // The above list of transactions are all settle up transactions
+        // for the expenses in which given user is involved.
+
+        // We will create a new list of settle up transactions in which only the given user either pays or gets money.
+        List<Transaction> userTransactions = new ArrayList<>();
+        for(Transaction transaction : transactions){
+            if(transaction.getFrom().getId().equals(userId) || transaction.getTo().getId().equals(userId)){
+                userTransactions.add(transaction);
+            }
+        }
+        return  userTransactions;
     }
 }
